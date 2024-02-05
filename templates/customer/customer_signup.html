@@ -1,0 +1,135 @@
+<html>
+<head>
+    <title>Sign Up</title>
+    <style>
+        /* Center elements */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Form inputs */
+        input {
+            margin: 10px 0;
+            padding: 8px 12px;
+            width: 300px;
+        }
+
+        /* Password conditions */
+        .condition {
+            color: red;
+            margin: 4px 0;
+        }
+        .valid {
+            color: green;
+        }
+
+        /* Submit button */
+        button {
+            padding: 10px 20px;
+            background: #ccc;
+            border: 0;
+            border-radius: 4px;
+            cursor: pointer; 
+        }
+
+    </style>
+</head>
+<body>
+
+    <form id="signup-form">
+        <input name="email" type="email" placeholder="Email">
+        <input name="password" type="password" placeholder="Password">
+        <input name="confirmPassword" type="password" placeholder="Confirm Password">
+
+        <div class="condition" id="length">Minimum 8 characters</div>
+        <div class="condition" id="number">At least 1 number</div>
+        <div class="condition" id="symbol">At least 1 symbol</div>
+        <div class="condition" id="uppercase">At least 1 uppercase</div>
+        <div class="condition" id="match">Passwords match</div>
+
+        <button>Sign Up</button>
+    </form>
+
+    <script>
+        const form = document.getElementById('signup-form');
+        const password = document.querySelector('input[name="password"]');
+        const confirmPassword = document.querySelector('input[name="confirmPassword"]');
+
+        // Check password conditions on keyup
+        password.addEventListener('keyup', checkConditions);
+        confirmPassword.addEventListener('keyup', checkConditions);
+
+        function checkConditions() {
+            // Get password values
+            const passwordValue = password.value;
+            const confirmValue = confirmPassword.value;
+
+            // Check for min length
+            let length = document.getElementById('length');
+            if (passwordValue.length >= 8) {
+                length.classList.add('valid');
+            } else {
+                length.classList.remove('valid');
+            }
+
+            // Check for number
+            let number = document.getElementById('number');
+            if (passwordValue.match(/\d/)) {
+                number.classList.add('valid'); 
+            } else {
+                number.classList.remove('valid');
+            }
+        
+           // Check for symbol
+           let symbol = document.getElementById('symbol');
+           if (passwordValue.match(/[!@#$%^&*]/)) {
+                symbol.classList.add('valid');
+           } else {
+                symbol.classList.remove('valid');
+           }
+
+           // Check for uppercase
+           let uppercase = document.getElementById('uppercase');
+           if (passwordValue.match(/[A-Z]/)) {
+               uppercase.classList.add('valid');
+           } else {
+               uppercase.classList.remove('valid');
+           }
+
+           // Check if passwords match
+           let match = document.getElementById('match');
+           if (passwordValue === confirmValue) {
+               match.classList.add('valid');
+           } else {
+               match.classList.remove('valid');
+           }
+        }
+
+        // Prevent form submit if conditions not met
+        form.addEventListener('submit', (e) => {
+            let conditions = document.querySelectorAll('.condition');
+
+            let valid = true;
+            conditions.forEach(condition => {
+                if (!condition.classList.contains('valid')) {
+                    valid = false;
+                }
+            });
+
+            if (!valid) {
+                e.preventDefault();
+            }
+        });
+    </script>
+
+</body>
+</html>

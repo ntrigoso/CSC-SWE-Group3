@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vertical Tabs</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+        }
+        .tabs-container {
+            display: flex;
+            flex-direction: column;
+            background-color: #f0f0f0;
+            border-right: 1px solid #ccc;
+            height: 100%;
+            width: fit-content;
+        }
+        .tab {
+            padding: 10px;
+            text-align: left;
+            cursor: pointer;
+            border: none;
+            border-left: 5px solid transparent;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+        }
+        .tab.active-tab {
+            border-left: 5px solid transparent;
+            background-color: #fff;
+        }
+        #rest_of_the_page {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active-content {
+            display: block;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="tabs-container">
+        <div class="tab active-tab" onclick="openTab('Inventory')">Inventory</div>
+        <div class="tab" onclick="openTab('Routes')">Routes</div>
+        <div class="tab" onclick="openTab('Drivers')">Drivers</div>
+    </div>
+    <div id="rest_of_the_page">
+        <div class="tab-content active-content"><h2>Inventory</h2>
+            {% if stocks %} 
+                <table>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Quantity</th>
+                    </tr>
+                    {% for stock in stocks %}
+                    <tr>
+                        <td>{{ stock.name }}</td>
+                        <td>{{ stock.quantity }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            {% else %} 
+                <p>No inventory items added yet.</p>
+            {% endif %}
+        </div>
+        <div class="tab-content"><h2>Routes</h2>Routes Content</div>
+        <div class="tab-content"><h2>Drivers</h2>Drivers Content</div>
+    </div>
+    <script>
+        function openTab(tabName) {
+            var tabs = document.querySelectorAll('.tab');
+            var tabContents = document.querySelectorAll('.tab-content');
+            tabs.forEach(function(tab) {
+                if (tab.textContent === tabName) {
+                    tab.classList.add('active-tab');
+                } else {
+                    tab.classList.remove('active-tab');
+                }
+            });
+            tabContents.forEach(function(content) {
+                if (content.querySelector('h2').textContent === tabName) {
+                    content.classList.add('active-content');
+                } else {
+                    content.classList.remove('active-content');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
