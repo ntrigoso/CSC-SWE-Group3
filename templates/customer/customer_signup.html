@@ -44,9 +44,14 @@
     </style>
 </head>
 <body>
-
-    <form id="signup-form">
+    {% if error %}
+  <p style="color:red;">{{ error }}</p> 
+{% endif %}
+    <form id="signup-form" method="post" action="{% url 'customer-signup' %}">
+        {% csrf_token %}
+  
         <input name="email" type="email" placeholder="Email">
+        
         <input name="password" type="password" placeholder="Password">
         <input name="confirmPassword" type="password" placeholder="Confirm Password">
 
@@ -55,8 +60,8 @@
         <div class="condition" id="symbol">At least 1 symbol</div>
         <div class="condition" id="uppercase">At least 1 uppercase</div>
         <div class="condition" id="match">Passwords match</div>
-
-        <button>Sign Up</button>
+        {{ form.as_p }}
+        <button type="submit">Sign Up</button>
     </form>
 
     <script>

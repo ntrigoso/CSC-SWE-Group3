@@ -1,5 +1,8 @@
 import os
+
 from pathlib import Path
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'abc123longrandomstring890!@#XYZ'
 DEBUG = True
@@ -16,7 +19,6 @@ INSTALLED_APPS = [
     'customer',
     'address',
 ]
-
 
 
 MIDDLEWARE = [

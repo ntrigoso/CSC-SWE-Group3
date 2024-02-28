@@ -1,0 +1,24 @@
+<!-- base.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+<form method="POST">
+    {% csrf_token %}
+    
+    <label>Package name:</label>
+    <input name="name">
+    
+    <label>Weight:</label> 
+    <input name="weight">
+    
+    <!-- Other fields... -->
+    
+    <button type="submit">Submit</button>
+  </form>
+</head>
+<body>
+  {% block content %}
+  {% endblock %}
+</body>
+</html>
