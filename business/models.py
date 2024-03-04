@@ -1,18 +1,20 @@
 from django.db import models
+from customer.models import Customer
 
 
 class Package(models.Model):
     package_id = models.AutoField(primary_key=True)
-    shipment_id = models.IntegerField()
+    shipment_id = models.IntegerField(null=True) 
     package_description = models.TextField(null=True, blank=True)
     package_weight = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     package_dimensions = models.CharField(max_length=255, null=True, blank=True)
     package_status = models.CharField(max_length=50, null=True, blank=True)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='packages')
 
 class Shipment(models.Model):
     id = models.AutoField(primary_key=True)
     order_number = models.CharField(max_length=50, null=True, blank=True)
-    customer_id = models.IntegerField(null=True, blank=True)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='shipments')
     order_date = models.DateField(null=True, blank=True)
     status = models.CharField(max_length=50, null=True, blank=True)
     shipment_date = models.DateField(null=True, blank=True)

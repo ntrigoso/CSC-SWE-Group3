@@ -4,10 +4,10 @@ from django.contrib.auth.models import User
 
 class Customer(models.Model):
     id = models.AutoField(primary_key=True)
-    user_id = models.IntegerField(null=True, blank=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=50, null=True, blank=True)
     last_name = models.CharField(max_length=50, null=True, blank=True)
-    address = models.TextField(null=True, blank=True)
+    address = models.TextField(max_length=55, null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
     phone = models.CharField(max_length=20, null=True, blank=True)
 

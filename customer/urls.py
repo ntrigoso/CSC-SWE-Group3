@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import customer_login, initialize_customer_data, customer_signup, customer_options, customer_profile, customer_dashboard
+from .views import customer_login, initialize_customer_data, customer_signup, customer_options, customer_profile, customer_dashboard, customer_service
 
 urlpatterns = [
     path('', customer_options, name='customer-options'),
@@ -9,5 +9,5 @@ urlpatterns = [
     path('login/', customer_login, name='customer-login'),
     path('profile/', customer_profile, name='customer-profile'),
     path('dashboard/', customer_dashboard, name='customer-dashboard'),
-    
+    path('customer-service/', customer_service, name='customer-service'),
 ]

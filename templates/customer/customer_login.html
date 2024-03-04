@@ -84,13 +84,11 @@
 </head>
 
 <body>
+    {% if error_message %}
+    <p style="color:red;">{{ error_message }}</p>
+    {% endif %}
     <div class="container">
         <div class="form-container">
-            {% if messages %}
-                {% for message in messages %}
-                    <div>{{ message }}</div>
-                {% endfor %}
-            {% endif %}
             <form method="post" action="{% url 'customer-login' %}">
                 {% csrf_token %}
                 <label for="email">Email:</label>

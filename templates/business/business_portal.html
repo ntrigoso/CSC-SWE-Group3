@@ -55,27 +55,61 @@
         <div class="tab" onclick="openTab('Drivers')">Drivers</div>
     </div>
     <div id="rest_of_the_page">
-        <div class="tab-content active-content"><h2>Inventory</h2>
-            {% if stocks %} 
-                <table>
-                    <tr>
-                        <th>Item Name</th>
-                        <th>Quantity</th>
-                    </tr>
-                    {% for stock in stocks %}
-                    <tr>
-                        <td>{{ stock.name }}</td>
-                        <td>{{ stock.quantity }}</td>
-                    </tr>
-                    {% endfor %}
-                </table>
-            {% else %} 
-                <p>No inventory items added yet.</p>
-            {% endif %}
-        </div>
-        <div class="tab-content"><h2>Routes</h2>Routes Content</div>
-        <div class="tab-content"><h2>Drivers</h2>Drivers Content</div>
-    </div>
+        <div class="tab-content active-content">
+          <h2>Inventory</h2>
+          {% if customer %}
+              <h3>Customer: {{ customer.first_name }} {{ customer.last_name }}</h3>
+          {% endif %}
+          {% if packages %}
+              <h3>Packages</h3>
+              <table>
+                  <tr>
+                      <th>Package ID</th>
+                      <th>Description</th>
+                      <th>Weight</th>
+                      <th>Actions</th>
+                  </tr>
+                  {% for package in packages %}
+                      <tr>
+                          <td>{{ package.package_id }}</td>
+                          <td>{{ package.package_description }}</td>
+                          <td>{{ package.package_weight }}</td>
+                          <td>
+                              <a href="{% url 'dispatch-package' package.package_id %}">Dispatch</a>
+                              <a href="{% url 'deny-package' package.package_id %}">Deny</a>
+                          </td>
+                      </tr>
+                  {% endfor %}
+              </table>
+          {% else %}
+              <p>No packages found.</p>
+          {% endif %}
+      
+          {% if shipments %}
+              <h3>Shipments</h3>
+              <table>
+                  <tr>
+                      <th>Order Number</th>
+                      <th>Status</th>
+                      <th>Shipment Date</th>
+                      <th>Actions</th>
+                  </tr>
+                  {% for shipment in shipments %}
+                      <tr>
+                          <td>{{ shipment.order_number }}</td>
+                          <td>{{ shipment.status }}</td>
+                          <td>{{ shipment.shipment_date }}</td>
+                          <td>
+                              <a href="{% url 'dispatch-shipment' shipment.id %}">Dispatch</a>
+                              <a href="{% url 'deny-shipment' shipment.id %}">Deny</a>
+                          </td>
+                      </tr>
+                  {% endfor %}
+              </table>
+          {% else %}
+              <p>No shipments found.</p>
+          {% endif %}
+      </div>
     <script>
         function openTab(tabName) {
             var tabs = document.querySelectorAll('.tab');

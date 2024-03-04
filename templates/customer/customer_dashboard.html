@@ -1,24 +1,131 @@
-<!-- base.html -->
+{% extends 'base.html' %}
+{% load static %}
 
-<!DOCTYPE html>
-<html>
-<head>
-<form method="POST">
-    {% csrf_token %}
-    
-    <label>Package name:</label>
-    <input name="name">
-    
-    <label>Weight:</label> 
-    <input name="weight">
-    
-    <!-- Other fields... -->
-    
-    <button type="submit">Submit</button>
-  </form>
-</head>
-<body>
-  {% block content %}
-  {% endblock %}
-</body>
-</html>
+{% block content %}
+<style>
+/* Inline CSS */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    display: flex;
+}
+
+.tabs-container {
+    display: flex;
+    flex-direction: column;
+    background-color: #f0f0f0;
+    border-right: 1px solid #ccc;
+    height: 100%;
+    width: fit-content;
+}
+
+.tab {
+    padding: 10px;
+    text-align: left;
+    cursor: pointer;
+    border: none;
+    border-left: 5px solid transparent;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+}
+
+.tab.active-tab {
+    border-left: 5px solid transparent;
+    background-color: #fff;
+}
+
+#rest_of_the_page {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active-content {
+    display: block;
+    text-align: center;
+}
+</style>
+
+<div class="tabs-container">
+    <div class="tab active-tab" onclick="openTab('Create Order')">Create Order</div>
+    <div class="tab" onclick="openTab('Active Orders')">Active Orders</div>
+    <div class="tab" onclick="openTab('Customer Service')">Customer Service</div>
+</div>
+<div id="rest_of_the_page">
+    <div class="tab-content active-content">
+        <h2>Create Order</h2>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <div class="tab-content">
+        <h2>Active Orders</h2>
+        {% if active_orders %}
+        <table>
+            <tr>
+                <th>Order Number</th>
+                <th>Status</th>
+                <!-- Add other relevant columns -->
+            </tr>
+            {% for order in active_orders %}
+            <tr>
+                <td>{{ order.order_number }}</td>
+                <td>{{ order.status }}</td>
+                <!-- Add other column values -->
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p>No active orders found.</p>
+        {% endif %}
+    </div>
+    <div class="tab-content">
+      <h2>Customer Service</h2>
+      <form method="post" action="{% url 'customer-service' %}">
+        {% csrf_token %}
+          <label for="order-select">Select an Order:</label>
+          <select id="order-select" name="order">
+              {% for order in active_orders %}
+              <option value="{{ order.id }}">{{ order.order_number }}</option>
+              {% endfor %}
+          </select>
+          <textarea name="complaint" placeholder="Enter your complaint or inquiry..."></textarea>
+          <button type="submit">Submit</button>
+      </form>
+        <p>Please contact us at customer.service@example.com for any inquiries or issues.</p>
+    </div>
+</div>
+
+<script>
+// Inline JavaScript
+function openTab(tabName) {
+    var tabs = document.querySelectorAll('.tab');
+    var tabContents = document.querySelectorAll('.tab-content');
+
+    tabs.forEach(function(tab) {
+        if (tab.textContent === tabName) {
+            tab.classList.add('active-tab');
+        } else {
+            tab.classList.remove('active-tab');
+        }
+    });
+
+    tabContents.forEach(function(content) {
+        if (content.querySelector('h2').textContent === tabName) {
+            content.classList.add('active-content');
+        } else {
+            content.classList.remove('active-content');
+        }
+    });
+}
+</script>
+{% endblock %}
