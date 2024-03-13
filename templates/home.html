@@ -1,18 +1,104 @@
 <!-- delivery_portal/templates/home.html -->
 
-{% extends 'base.html' %}
-{% block content %}
-<div>
-    <h1>Welcome to my Delivery Portal!</h1>
-    <p>This is a simple and random paragraph of text.</p>
-    <div>
-        <a href="{% url 'customer-login' %}"><button>Customer Login</button></a>
-        <a href="{% url 'business_portal' %}"><button>Business Login</button></a>
-    </div>
-    <ul>
-        <li>Item 1</li>
-        <li>Item 2</li>
-        <li>Item 3</li>
-    </ul>
-</div>
-{% endblock %}
+<!--{% extends 'base.html' %}
+{% block content %} -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrackTrek</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="logo1.png" alt="Logo">
+            </div>
+            <ul>
+                <!-- scroll links -->
+                <li><a href="#about">ABOUT</a></li>
+                <li><a href="#services">SERVICES</a></li>
+                <li><a href="#contact">CONTACT</a></li>
+            </ul>
+            <!-- enter path to login -->
+            <a href="" class="login">LOGIN</a>
+        </nav>
+    </header>
+    <main>
+        <section class="one" id="about">
+            <div class="one-content">
+                <h1>Fast, Reliable Shipping Around the Globe</h1>
+                <p>TrakTrek revolutionizes global logistics with assured safety and real-time tracking, delivering your
+                    goods to any corner of the world. Our service combines cutting-edge technology with exceptional
+                    security measures, ensuring a seamless and transparent shipping experience. Choose TrakTrek for
+                    reliable, next-generation international courier services that redefine the standards of delivery.
+                    TrakTrek's commitment to innovation extends to our customer service, providing personalized support
+                    and proactive problem-solving to guarantee satisfaction with every shipment.</p>
+                <!-- Enter link for tracking -->
+                <a href="#" class="btn-discover">Track Your Package</a>
+            </div>
+            <div class="one-image">
+                <img src="pic1.png" alt="Delivery Image">
+            </div>
+        </section>
+        <section class="two" id="services">
+            <div class="column admin">
+                <h2>Become an Admin</h2>
+                <img src="admin.png" alt="admin">
+                <p>Join our platform as an admin and gain full control over your shipments. Enjoy streamlined logistics,
+                    advanced tracking, and comprehensive support. TrakTrek is here for all of your seller needs.</p>
+                <ul class="benefits">
+                    <li>Advanced Dashboard</li>
+                    <li>Real-Time Analytics</li>
+                    <li>Priority Support</li>
+                    <li>Custom Reports</li>
+                    <li>Enhanced Security</li>
+                </ul>
+            </div>
+            <div class="column user">
+                <h2>For Our Valued Customers</h2>
+                <img src="customer.png" alt="customer">
+                <p>Experience unparalleled convenience and reliability with TrakTrek's customer-focused shipping
+                    solutions. Benefit from cutting-edge technology that ensures your packages are always in safe hands.
+                </p>
+                <ul class="benefits">
+                    <li>Real-time Package Tracking</li>
+                    <li>24/7 Customer Support</li>
+                    <li>Flexible Shipping Options</li>
+                    <li>Secure and Confidential Handling</li>
+                    <li>Easy-to-Use Dashboard</li>
+                </ul>
+            </div>
+            <div class="container">
+                <a href="#" class="register">Register Today!</a>
+            </div>
+        </section>
+    </main>
+    <footer id="contact">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Contact Information</h3>
+                <ul>
+                    <li>Email: contact@traktrek.com</li>
+                    <li>Phone: +123 456 7890</li>
+                    <li>Address: 123 Shipping Lane, Delivery City, USA</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <ul class="social-links">
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">LinkedIn</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>    
+</body>
+
+</html>
+<!--{% endblock %}-->
