@@ -3,7 +3,7 @@
     <title>Sign Up</title>
     <style>
         /* Center elements */
-        body {
+        /* body {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -14,37 +14,200 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-        }
+        } */
 
         /* Form inputs */
-        input {
+        /* input {
             margin: 10px 0;
             padding: 8px 12px;
             width: 300px;
-        }
+        } */
 
         /* Password conditions */
-        .condition {
+        /* .condition {
             color: red;
             margin: 4px 0;
         }
         .valid {
             color: green;
-        }
+        } */
 
         /* Submit button */
-        button {
+        /* button {
             padding: 10px 20px;
             background: #ccc;
             border: 0;
             border-radius: 4px;
             cursor: pointer; 
+        } */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .form-container {
+            width: 100%;
+        }
+
+        .form-input {
+            margin-bottom: 20px;
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .form-input:last-child {
+            margin-bottom: 0;
+        }
+
+        .button-container {
+            text-align: center;
+        }
+
+        .signup-button {
+            padding: 10px 20px;
+            margin: 10px 0;
+            font-size: 18px;
+            text-decoration: none;
+            background-color: #4a76a8;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .signup-button:hover {
+            background-color: #2b598a;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 30px;
+            padding-bottom: 20px;
+
+        }
+
+        .signup-text {
+            text-align: center;
+            padding-bottom: 20px;
+        }
+
+        .signup-link {
+            color: rgba(95, 122, 229);
+            font-weight: bold;
+        }
+
+        .condition {
+            color: red;
+            margin: 4px 0;
+        }
+
+        .valid {
+            color: green;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-center {
+            justify-content: center;
+        }
+
+        .py-3 {
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem;
+        }
+
+        .mx-4 {
+            margin-left: 1rem;
+            margin-right: 1rem;
+        }
+
+        .space-x-2 > *+* {
+            margin-left: 0.5rem;
+        }
+
+        .divider {
+            width: 4rem;
+            height: 0.12rem;
+            background-color: #abcdef;
+        }
+
+        .text-sm {
+            font-size: 0.875rem;
+        }
+
+        .text-gray-400 {
+            color: #a0aec0;
+        }
+
+        .social-login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: 1rem;
+            /* Adjust as needed */
+            margin-left: 1rem;
+            /* Adjust as needed */
+            margin-right: 1rem;
+            /* Adjust as needed */
+        }
+
+        .social-login-item {
+            width: 3rem;
+            height: 3rem;
+        }
+
+        .social-login-img {
+            width: 90%;
+            height: 90%;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 50%;
+            margin-left: 0.25rem;
+            margin-right: 0.25rem;
+        }
+
+        .social-login-img-twitter {
+            width: 90%;
+            height: 90%;
+            object-fit: scale-down;
+            object-position: center;
+            border-radius: 50%;
+            margin-left: 0.25rem;
+            margin-right: 0.25rem;
         }
 
     </style>
 </head>
 <body>
-    {% if error %}
+    <!-- {% if error %}
   <p style="color:red;">{{ error }}</p> 
 {% endif %}
     <form id="signup-form" method="post" action="{% url 'customer-signup' %}">
@@ -62,7 +225,61 @@
         <div class="condition" id="match">Passwords match</div>
         {{ form.as_p }}
         <button type="submit">Sign Up</button>
-    </form>
+    </form> -->
+    <div class="container">
+        <div class="form-container">
+            {% if error %}
+            <p style="color:red;">{{ error }}</p> 
+            {% endif %}
+            <form id="signup-form" method="post" action="{% url 'customer-signup' %}">
+                {% csrf_token %}
+                <h3 class="title">Create your TrackTrek account</h3>
+                <p class="signup-text">Already have an account? <a href="{% url 'customer-login' %}"
+                    class="signup-link">Log in</a></p>
+                <label for="email">Email:</label>
+                <input name="email" type="email" class="form-input" required>
+                <label for="password">Password:</label>
+                <input name="password" type="password" class="form-input" required>
+                <label for="password">Confirm Password:</label>
+                <input name="confirmPassword" type="password" class="form-input" required>
+                <div class="condition" id="length">Minimum 8 characters</div>
+                <div class="condition" id="number">At least 1 number</div>
+                <div class="condition" id="symbol">At least 1 symbol</div>
+                <div class="condition" id="uppercase">At least 1 uppercase</div>
+                <div class="condition" id="match">Passwords match</div>
+                <button type="submit" class="signup-button">Create an account</button>
+
+                <div class="flex items-center justify-center py-3 mx-4 space-x-2">
+                    <div class="divider"></div>
+                    <div class="text-sm text-gray-400">or continue with</div>
+                    <div class="divider"></div>
+                </div>
+                <div class="social-login-container">
+                    <div class="social-login-item">
+                        <a href="">
+                            <img src="/static/img/google-logo.jpg" alt="Google Selar Login" class="social-login-img">
+                        </a>
+                    </div>
+                    <div class="social-login-item">
+                        <a href="">
+                            <img src="/static/img/twitter-logo.png" alt="Twitter Selar Login"
+                                class="social-login-img-twitter">
+                        </a>
+                    </div>
+                    <div class="social-login-item">
+                        <a href="">
+                            <img src="/static/img/facebook-logo.png" alt="Facebook Logo" class="social-login-img">
+                        </a>
+                    </div>
+                </div>
+            </form>
+            
+        </div>
+        <!-- <div class="signup-text">
+            Already have an account? <a href="{% url 'customer-login' %}" class="signup-link">Log in here</a>
+        </div> -->
+        
+    </div>
 
     <script>
         const form = document.getElementById('signup-form');
