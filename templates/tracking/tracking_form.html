@@ -1,0 +1,11 @@
+  {% extends 'base.html' %}
+
+         {% block content %}
+         <h1>Track Your Shipment</h1>
+         <form method="post" action="{% url 'package-status' %}">
+             {% csrf_token %}
+             <label for="tracking_number">Tracking Number:</label>
+             <input type="text" id="tracking_number" name="tracking_number" required>
+             <button type="submit">Track</button>
+         </form>
+         {% endblock %}

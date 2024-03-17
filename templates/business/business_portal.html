@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vertical Tabs</title>
+    <title>Business Portal</title>
     <style>
         body, html {
             margin: 0;
@@ -46,70 +46,220 @@
             display: block;
             text-align: center;
         }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
     </style>
 </head>
 <body>
     <div class="tabs-container">
         <div class="tab active-tab" onclick="openTab('Inventory')">Inventory</div>
         <div class="tab" onclick="openTab('Routes')">Routes</div>
-        <div class="tab" onclick="openTab('Drivers')">Drivers</div>
+        <div class="tab" onclick="openTab('Customers')">Customers</div>
+        <div class="tab" onclick="openTab('Packages')">Packages</div>
+        <div class="tab" onclick="openTab('Orders')">Orders</div>
+        <div class="tab" onclick="openTab('Feedback')">Feedback</div>
+        <div class="tab" onclick="openTab('Vehicles')">Vehicles</div>
+        <div class="logout-button">
+            <a href="{% url 'customer-logout' %}">Logout</a>
+        </div>
+        
+        
     </div>
     <div id="rest_of_the_page">
         <div class="tab-content active-content">
-          <h2>Inventory</h2>
-          {% if customer %}
-              <h3>Customer: {{ customer.first_name }} {{ customer.last_name }}</h3>
-          {% endif %}
-          {% if packages %}
-              <h3>Packages</h3>
-              <table>
-                  <tr>
-                      <th>Package ID</th>
-                      <th>Description</th>
-                      <th>Weight</th>
-                      <th>Actions</th>
-                  </tr>
-                  {% for package in packages %}
-                      <tr>
-                          <td>{{ package.package_id }}</td>
-                          <td>{{ package.package_description }}</td>
-                          <td>{{ package.package_weight }}</td>
-                          <td>
-                              <a href="{% url 'dispatch-package' package.package_id %}">Dispatch</a>
-                              <a href="{% url 'deny-package' package.package_id %}">Deny</a>
-                          </td>
-                      </tr>
-                  {% endfor %}
-              </table>
-          {% else %}
-              <p>No packages found.</p>
-          {% endif %}
-      
-          {% if shipments %}
-              <h3>Shipments</h3>
-              <table>
-                  <tr>
-                      <th>Order Number</th>
-                      <th>Status</th>
-                      <th>Shipment Date</th>
-                      <th>Actions</th>
-                  </tr>
-                  {% for shipment in shipments %}
-                      <tr>
-                          <td>{{ shipment.order_number }}</td>
-                          <td>{{ shipment.status }}</td>
-                          <td>{{ shipment.shipment_date }}</td>
-                          <td>
-                              <a href="{% url 'dispatch-shipment' shipment.id %}">Dispatch</a>
-                              <a href="{% url 'deny-shipment' shipment.id %}">Deny</a>
-                          </td>
-                      </tr>
-                  {% endfor %}
-              </table>
-          {% else %}
-              <p>No shipments found.</p>
-          {% endif %}
-      </div>
+            <h2>Inventory</h2>
+            <div id="inventory_content">                    
+                <table>
+                    <tr>
+                        <th>Package ID</th>
+                        <th>Customer</th>
+                        <th>Status</th>
+                        <!-- other columns... -->
+                    </tr>
+                    {% for package in packages %}
+                        <tr>
+                            <td>{{ package.package_id }}</td>
+                            <td>{{ package.package_customer }}</td>
+                            <td>{{ package.package_status }}</td>
+                            <!-- other column values... -->
+                        </tr>
+                    {% empty %}
+                    <tr> 
+                        <td colspan = "100%">No packages found.</td>
+                    </tr> 
+                    {% endfor %}
+            </table>
+            </div>
+        </div>
+        <div class="tab-content" id="customers_tab">
+            <h2>Customers</h2>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Address</th> 
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <!-- Add more columns as needed -->
+                </tr>
+                {% for customer in customers %}
+                <tr>
+                    <td>{{ customer.id }}</td>
+                    <td>{{ customer.first_name }}</td>
+                    <td>{{ customer.last_name }}</td>
+                    <td>{{ customer.address }} </td> 
+                    <td>{{ customer.email }}</td>
+                    <td>{{ customer.phone }} </td> 
+                    <!-- Add more columns as needed -->
+                </tr>
+                {% empty %}
+                    <tr> 
+                        <td colspan = "100%">No customers found.</td>
+                    </tr> 
+                {% endfor %}
+            </table>
+        </div>
+        <div class="tab-content" id="packages_tab">
+            <h2>Packages</h2>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Customer ID</th>
+                    <th>Tracking Number</th>
+                    <th>Description</th>
+                    <th>Weight</th> 
+                    <th>Dimensions</th> 
+                    <th>Shipping Type</th> 
+                    <th>Estimated Cost</th> 
+                    <th>Status</th> 
+                    <th>Created At</th> 
+                    <th>Updated At</th> 
+                    <th>Pickup Address</th>
+                    <th>Delivery Address</th> 
+                    <!-- Add more columns as needed -->
+                </tr>
+                {% for package in packages %}
+                <tr>
+                    <td>{{ package.package_id }}</td>
+                    <td>{{ package.customer_id }}</td>
+                    <td>{{ package.tracking_number }}</td>
+                    <td>{{ package.package_description }}</td>
+                    <td>{{ package.package_weight }}</td>
+                    <td>{{ package.package_dimensions }}</td>
+                    <td>{{ package.package_shipping_type }}</td>
+                    <td>{{ package.package_cost }}</td>
+                    <td>{{ package.package_status }}</td>
+                    <td>{{ package.package_created }}</td>
+                    <td>{{ package.package_updated }}</td>
+                    <td>{{ package.package_pickup }}</td>
+                    <td>{{ package.package_delivery }}</td>
+                    <!-- Add more columns as needed -->
+                </tr>
+                {% empty %}
+                    <tr> 
+                        <td colspan = "100%">No packages found.</td>
+                    </tr> 
+                {% endfor %}
+            </table>
+        </div>
+        <div class="tab-content" id="orders_tab">
+            <h2>Orders</h2>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Customer ID</th>
+                    <th>Order Number</th>
+                    <th>Package ID</th> 
+                    <th>Pickup or Dropoff</th>
+                    <th>Status</th> 
+                    <th>Created At</th> 
+                    <th>Updated At</th> 
+                    <!-- Add more columns as needed -->
+                </tr>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.customer_id }}</td>
+                    <td>{{ order.order_number }}</td>
+                    <td>{{ order.package_id }}</td>
+                    <td>{{ order.pickup_or_dropoff }}</td>
+                    <td>{{ order.package_status }}</td>
+                    <td>{{ order.package_created}}</td>
+                    <td>{{ order.package_updated }}</td>
+                    <!-- Add more columns as needed -->
+                </tr>
+                {% empty %}
+                    <tr> 
+                        <td colspan = "100%">No packages found.</td>
+                    </tr> 
+                {% endfor %}
+            </table>
+        </div>
+        <div class="tab-content" id="feedback_tab">
+            <h2>Feedback</h2>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Customer ID</th>
+                    <th>Comment</th>
+                    <th>Created</th> 
+                    <!-- Add more columns as needed -->
+                </tr>
+                {% for feedback in feedbacks %}
+                <tr>
+                    <td>{{ feedback.id }}</td>
+                    <td>{{ feedback.customer_id }}</td>
+                    <td>{{ feedback.comment }}</td>
+                    <td>{{ feedback.created }}</td>
+                    <!-- Add more columns as needed -->
+                </tr>
+                {% empty %}
+                    <tr> 
+                        <td colspan = "100%">No feedback found.</td>
+                    </tr> 
+                {% endfor %}
+            </table>
+        </div>
+        
+        <div class="tab-content" id="vehicles_tab">
+            <h2>Vehicles</h2>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Model</th>
+                    <th>Plate Number</th>
+                    <th>Status</th> 
+                    <!-- Add more columns as needed -->
+                </tr>
+                {% for vehicle in vehicles %}
+                <tr>
+                    <td>{{ vehicle.id }}</td>
+                    <td>{{ vehicle.model }}</td>
+                    <td>{{ vehicle.plate_number }}</td>
+                    <td>{{ vehicle.status }}</td>
+                    <!-- Add more columns as needed -->
+                </tr>
+                {% empty %}
+                    <tr> 
+                        <td colspan = "100%">No vehicles found.</td>
+                    </tr> 
+                {% endfor %}
+            </table>
+        </div>
+        <div class="tab-content"><h2>Routes</h2>Routes Content</div>
+        
+    </div>
     <script>
         function openTab(tabName) {
             var tabs = document.querySelectorAll('.tab');

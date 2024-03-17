@@ -1,106 +1,253 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login and Signup</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #f0f0f0;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.7.1/alpine.min.js"
+	integrity="sha512-ZRY5xQ6SJZ8rOZmu8WWqb6mgtzkFH2F6HLLhcABi9aOV9M+J5CDmNpmlAXZU9jq7czqBb41nIKfXpG0GeI/s4g=="
+	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-        .container {
-            background-color: #fff;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 600px;
-            width: 100%;
-        }
+<title>Login and Signup</title>
+<style>
+@import
+	url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap')
+	;
 
-        .form-container {
-            flex: 1;
-            margin-right: 20px;
-        }
+body {
+	margin: 0;
+	padding: 0;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #f0f0f0;
+	font-family: 'Roboto';
+}
 
-        .signup-container {
-            flex: 1;
-            text-align: center;
-        }
+.container {
+	background-color: #fff;
+	padding: 40px;
+	border-radius: 10px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	max-width: 600px;
+	width: 100%;
+}
 
-        .form-input {
-            margin-bottom: 20px;
-            width: 100%;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-        }
+.form-container {
+	flex: 1;
+	margin-right: 20px;
+}
 
-        .form-input:last-child {
-            margin-bottom: 0;
-        }
+.signup-container {
+	flex: 1;
+	text-align: center;
+}
 
-        .button-container {
-            text-align: center;
-        }
+.form-input {
+	margin-bottom: 20px;
+	width: 100%;
+	padding: 10px;
+	border-radius: 5px;
+	border: 1px solid #ddd;
+}
 
-        .login-button {
-            padding: 10px 20px;
-            margin: 10px 0;
-            font-size: 18px;
-            text-decoration: none;
-            background-color: #2b598a;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-        }
+.form-input:last-child {
+	margin-bottom: 0;
+}
 
-        .signup-button {
-            padding: 10px 20px;
-            font-size: 18px;
-            text-decoration: none;
-            background-color: #4a76a8;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+.button-container {
+	text-align: center;
+}
 
-        .signup-button:hover {
-            background-color: #2b598a;
-        }
-    </style>
+.login-button {
+	padding: 10px 20px;
+	margin: 10px 0;
+	font-size: 18px;
+	text-decoration: none;
+	background-color: #2b598a;
+	color: #fff;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	width: 100%;
+}
+
+.signup-button {
+	padding: 10px 20px;
+	font-size: 18px;
+	text-decoration: none;
+	background-color: #4a76a8;
+	color: #fff;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.signup-button:hover {
+	background-color: #2b598a;
+}
+
+.title {
+	text-align: center;
+	font-size: 30px;
+	padding-bottom: 20px;
+}
+
+.signup-text {
+	text-align: center;
+	padding-bottom: 20px;
+}
+
+.signup-link {
+	color: rgba(95, 122, 229);
+	font-weight: bold;
+}
+
+.forgot-password {
+	float: right;
+	font-weight: bold;
+	color: rgba(95, 122, 229);
+	padding-bottom: 20px;
+}
+
+.flex {
+	display: flex;
+}
+
+.items-center {
+	align-items: center;
+}
+
+.justify-center {
+	justify-content: center;
+}
+
+.py-3 {
+	padding-top: 0.75rem;
+	padding-bottom: 0.75rem;
+}
+
+.mx-4 {
+	margin-left: 1rem;
+	margin-right: 1rem;
+}
+
+.space-x-2>*+* {
+	margin-left: 0.5rem;
+}
+
+.divider {
+	width: 4rem;
+	height: 0.12rem;
+	background-color: #abcdef;
+}
+
+.text-sm {
+	font-size: 0.875rem;
+}
+
+.text-gray-400 {
+	color: #a0aec0;
+}
+
+.social-login-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding-top: 1rem;
+	margin-left: 1rem;
+	margin-right: 1rem;
+}
+
+.social-login-item {
+	width: 3rem;
+	height: 3rem;
+}
+
+.social-login-img {
+	width: 90%;
+	height: 90%;
+	object-fit: cover;
+	object-position: center;
+	border-radius: 50%;
+	margin-left: 0.25rem;
+	margin-right: 0.25rem;
+}
+
+.social-login-img-twitter {
+	width: 90%;
+	height: 90%;
+	object-fit: scale-down;
+	object-position: center;
+	border-radius: 50%;
+	margin-left: 0.25rem;
+	margin-right: 0.25rem;
+}
+</style>
 </head>
 
 <body>
-    {% if error_message %}
-    <p style="color:red;">{{ error_message }}</p>
-    {% endif %}
-    <div class="container">
-        <div class="form-container">
-            <form method="post" action="{% url 'customer-login' %}">
-                {% csrf_token %}
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" class="form-input" required>
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" class="form-input" required>
-                <button type="submit" class="login-button">Login</button>
-            </form>
-        </div>
-        <div class="signup-container">
-            <button class="signup-button" onclick="location.href='{% url 'customer-signup' %}'">Sign up</button>
-        </div>
-    </div>
+	<div class="container">
+		<div class="form-container">
+			{% if messages %}
+   <ul class="messages">
+       {% for message in messages %}
+       <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+       {% endfor %}
+   </ul>
+   {% endif %}
+			<form method="post" action="{% url 'customer-login' %}">
+				{% csrf_token %}
+				<h3 class="title">Log in to TrackTrek</h3>
+				<p class="signup-text">
+					Don't have an account? <a href="{% url 'customer-signup' %}"
+						class="signup-link">Create one for free</a>
+				</p>
+				<label for="email">Email:</label> <input type="email" id="email"
+					name="email" class="form-input" required> <label
+					for="password">Password:</label> <input type="password"
+					id="password" name="password" class="form-input" required>
+				<label>Login as:</label> <input type="radio" id="customer" name="user_type"
+					value="customer" checked> <label for="customer">Customer</label>
+				<input type="radio" id="admin" name="user_type" value="admin">
+				<label for="admin">Admin</label>
+				<p class="forgot-password">
+					<a href="{% url 'forgot-password' %}">Forgot your password?</a>
+				</p>
+
+				<button type="submit" class="login-button">Login</button>
+				<div class="flex items-center justify-center py-3 mx-4 space-x-2">
+					<div class="divider"></div>
+					<div class="text-sm text-gray-400">or continue with</div>
+					<div class="divider"></div>
+				</div>
+				<div class="social-login-container">
+					<div class="social-login-item">
+						<a href=""> <img src="/static/img/google-logo.jpg"
+							alt="Google Selar Login" class="social-login-img">
+						</a>
+					</div>
+					<div class="social-login-item">
+						<a href=""> <img src="/static/img/twitter-logo.png"
+							alt="Twitter Selar Login" class="social-login-img-twitter">
+						</a>
+					</div>
+					<div class="social-login-item">
+						<a href=""> <img src="/static/img/facebook-logo.png"
+							alt="Facebook Logo" class="social-login-img">
+						</a>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
 </body>
+
 </html>

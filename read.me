@@ -1,0 +1,61 @@
+# Delivery Portal
+
+A delivery management web application built with Django.
+
+
+### Prerequisites
+
+You will need Python 3 and pip installed. 
+To create a **virtualenv**:
+
+```bash 
+python3 -m venv env
+# On Windows: 
+# py -3 -m venv env
+``` 
+
+To activate the virtualenv (on Linux/MacOS):
+```bash
+source env/bin/activate
+```
+
+On Windows:
+```powershell
+.\env\Scripts\activate
+```
+
+To install dependencies with **pip**:
+```bash
+pip install -r requirements.txt
+```
+
+### Setting up Django
+
+1. Activate the virtual environment
+2. Install dependencies:
+
+```bash
+pip install django
+```
+
+3. Navigate to project directory 
+### Running the Server
+To run the Django development server:
+```bash
+python manage.py runserver
+```
+
+The app will be served at **http://127.0.0.1:8000**
+To access the admin panel, create a superuser:
+
+```bash
+python manage.py createsuperuser
+```
+
+### Features
+Key features of the app:
+
+- Driver management
+- Order tracking
+- Customer profiles
+- Admin dashboard
