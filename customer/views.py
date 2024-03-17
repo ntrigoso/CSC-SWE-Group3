@@ -1,3 +1,4 @@
+from .models import CustomerServiceMessage
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Customer, Package, Order, Feedback
@@ -26,6 +27,22 @@ import random
 import string
 
 
+
+@login_required
+def submit_customer_service_message(request):
+    if request.method == 'POST':
+        customer = Customer.objects.get(user_id=request.user.id)
+        message = request.POST.get('message')
+        CustomerServiceMessage.objects.create(
+            customer=customer,
+            message=message,
+            status='Open'
+        )
+        return redirect('customer-dashboard')
+    return redirect('customer-dashboard')
+
+
+print('Trying to reverse URL: business-portal')
 def generate_temporary_password(length=8):
     characters = string.ascii_letters + string.digits
     password = ''.join(random.choice(characters) for _ in range(length))
@@ -92,30 +109,34 @@ redirect_authenticated_user = True
 
 
 def customer_login(request):
+    if request.user.is_authenticated:
+        try:
+            admin = Admin.objects.get(user_id=request.user.id)
+            request.session['user_type'] = 'admin'
+            return redirect('business:business-portal')
+        except Admin.DoesNotExist:
+            request.session['user_type'] = 'customer'
+            return redirect('customer-dashboard')
+
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
-        user_type = request.POST.get('user_type')
 
         user = authenticate(request, username=email, password=password)
 
         if user is not None:
             login(request, user)
-            request.session['user_type'] = user_type
-            if user_type == 'customer':
+            try:
+                admin = Admin.objects.get(user_id=user.id)
+                request.session['user_type'] = 'admin'
+                return redirect('business:business-portal')
+            except Admin.DoesNotExist:
+                request.session['user_type'] = 'customer'
                 return redirect('customer-dashboard')
-            elif user_type == 'admin':
-                try:
-                    admin = Admin.objects.get(user_id=user.id)
-                    request.session['user_type'] = 'admin'
-                    return redirect('business:business-portal')
-                except Admin.DoesNotExist:
-                    messages.error(request, 'This account is not associated with an admin.')
-                    logout(request)
-                    return render(request, 'customer/customer_login.html')
         else:
             messages.error(request, 'Invalid email or password.')
     return render(request, 'customer/customer_login.html')
+
 
 
 
@@ -128,6 +149,42 @@ def customer_profile(request):
     return render(request, 'customer/customer_profile.html', context)
 
 @login_required
+def place_order(request):
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            customer = Customer.objects.get(user_id=request.user.id)
+            order = Order.objects.create(
+                customer=customer,
+                package_dimensions=form.cleaned_data['package_dimensions'],
+                package_weight=form.cleaned_data['package_weight'],
+                pickup_or_dropoff=form.cleaned_data['pickup_or_dropoff'],
+                pickup_address=form.cleaned_data['pickup_address'],
+                delivery_address=form.cleaned_data['delivery_address'],
+                shipping_type=form.cleaned_data['shipping_type'],
+                estimated_cost=calculate_estimated_cost(
+                    form.cleaned_data['package_dimensions'],
+                    form.cleaned_data['package_weight'],
+                    form.cleaned_data['shipping_type']
+                )['total'],
+                status='Processing'
+            )
+            Shipment.objects.create(
+                tracking_number=generate_tracking_number(),
+                package_description=f'Order #{order.order_number}',
+                pickup_address=form.cleaned_data['pickup_address'],
+                delivery_address=form.cleaned_data['delivery_address'],
+                customer=customer,
+                status='Processing'
+            )
+            return redirect('customer-dashboard')
+    else:
+        form = OrderForm()
+    return render(request, 'customer/order_form.html', {'form': form})
+
+
+
+@login_required
 def customer_dashboard(request):
     if request.session.get('user_type') != 'customer':
         return redirect('customer-login')
@@ -137,32 +194,13 @@ def customer_dashboard(request):
         messages.error(request, 'User does not exist.')
         return redirect('customer-login')
 
-    active_packages = Package.objects.filter(customer=customer, status='Processing')
-    past_packages = Package.objects.filter(customer=customer).exclude(status='Processing')
     active_orders = Order.objects.filter(customer=customer, status='Processing')
     past_orders = Order.objects.filter(customer=customer).exclude(status='Processing')
-    active_shipments = Shipment.objects.filter(status='Processing')
+    customer_service_messages = CustomerServiceMessage.objects.filter(customer=customer)
+
     order_form = OrderForm()
-    feedback_form = FeedbackForm()
 
     if request.method == 'POST':
-
-        if 'profile_form' in request.POST:
-            email = request.POST.get('email')
-            password = request.POST.get('password')
-            confirm_password = request.POST.get('confirm_password')
-
-            if password == confirm_password:
-                customer.email = email
-                customer.save()
-                user = customer.user
-                user.email = email
-                if password:
-                    user.set_password(password)
-                user.save()
-                messages.success(request, 'Profile updated successfully.')
-            else:
-                messages.error(request, 'Passwords do not match.')
         if 'order_form' in request.POST:
             order_form = OrderForm(request.POST)
             if order_form.is_valid():
@@ -187,32 +225,38 @@ def customer_dashboard(request):
                     status='Processing'
                 )
                 return redirect('customer-dashboard')
-        elif 'feedback_form' in request.POST:
-            feedback_form = FeedbackForm(request.POST)
-            if feedback_form.is_valid():
-                feedback = feedback_form.save(commit=False)
-                feedback.customer = customer
-                feedback.save()
-                return redirect('customer-dashboard')
+        elif 'customer_service_form' in request.POST:
+            message = request.POST.get('message')
+            CustomerServiceMessage.objects.create(
+                customer=customer,
+                message=message,
+                status='Open'
+            )
+            return redirect('customer-dashboard')
 
     context = {
         'order_form': order_form,
-        'feedback_form': feedback_form,
-        'active_packages': active_packages,
-        'past_packages': past_packages,
         'active_orders': active_orders,
         'past_orders': past_orders,
-        'active_shipments': active_shipments,
+        'customer_service_messages': customer_service_messages,
         'customer': customer
     }
     return render(request, 'customer/customer_dashboard.html', context)
 
 
 
-def calculate_estimated_cost(height, width, length, address, shipping_type):
-    volume = height * width * length
-    base_cost = volume * 0.5
-    shipping_cost = get_shipping_cost(shipping_type, address)
+def calculate_estimated_cost(package_dimensions, package_weight, shipping_type):
+    # Implement a realistic shipping cost calculation based on the package dimensions, weight, and shipping type
+    if shipping_type == 'ground':
+        shipping_cost = 10.0
+    elif shipping_type == 'priority':
+        shipping_cost = 20.0
+    elif shipping_type == 'nextDay':
+        shipping_cost = 30.0
+    else:
+        shipping_cost = 0.0
+
+    base_cost = package_weight * 0.5
     handling_cost = 5.0
     subtotal = base_cost + shipping_cost + handling_cost
     tax = subtotal * 0.1
@@ -316,35 +360,6 @@ def process_complaint(complaint):
     pass
 
 
-@login_required
-def place_order(request):
-    if request.method == 'POST':
-        form = OrderForm(request.POST)
-        if form.is_valid():
-            customer = Customer.objects.get(user_id=request.user.id)
-            order = Order.objects.create(
-                customer=customer,
-                package_dimensions=form.cleaned_data['package_dimensions'],
-                package_weight=form.cleaned_data['package_weight'],
-                pickup_or_dropoff=form.cleaned_data['pickup_or_dropoff'],
-                estimated_cost=calculate_estimated_cost(
-                    form.cleaned_data['package_dimensions'],
-                    form.cleaned_data['package_weight']
-                )['total']
-            )
-            # Handle payment and create shipment
-            shipment = Shipment.objects.create(
-                tracking_number=generate_tracking_number(),
-                package_description=f'Order #{order.order_number}',
-                pickup_address=customer.address,
-                delivery_address=customer.address,
-                customer=customer
-            )
-            return redirect('customer-dashboard')
-    else:
-        form = OrderForm()
-    return render(request, 'customer/order_form.html', {'form': form})
-
 
 @login_required
 def customer_profile(request):
@@ -402,4 +417,3 @@ def track_shipment(request):
         except Shipment.DoesNotExist:
             return render(request, 'customer/shipment_status.html', {'error': 'Invalid tracking number.'})
     return render(request, 'customer/track_shipment.html')
-

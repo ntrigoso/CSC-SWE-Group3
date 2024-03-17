@@ -99,3 +99,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'your-email@example.com'  # Replace with your email address
 EMAIL_HOST_PASSWORD = 'your-email-password'  # Replace with your email password
 DEFAULT_FROM_EMAIL = 'your-email@example.com'  # Replace with your email address
+
+CSRF_USE_SESSIONS = True
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]

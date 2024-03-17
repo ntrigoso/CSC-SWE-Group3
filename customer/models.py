@@ -19,6 +19,12 @@ class Customer(models.Model):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
+class CustomerServiceMessage(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=20, default='Open')
+
 
 class Admin(models.Model):
     id = models.AutoField(primary_key=True)
@@ -62,11 +68,16 @@ class Order(models.Model):
     package_dimensions = models.CharField(max_length=20)
     package_weight = models.DecimalField(max_digits=5, decimal_places=2)
     pickup_or_dropoff = models.CharField(max_length=10)
+    pickup_address = models.CharField(max_length=255, blank=True, null=True)
+    delivery_address = models.CharField(max_length=255, blank=True, null=True)
+    shipping_type = models.CharField(max_length=20, blank=True, null=True)
     estimated_cost = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.CharField(max_length=20, default='Processing')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+
+
 
 
 class Feedback(models.Model):
