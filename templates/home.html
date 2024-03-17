@@ -23,8 +23,8 @@
             </ul>
             <div class="container">
                 <a href="{% url 'customer-signup' %}" class="register">Register Today!</a>
-            </div>
-            <a href="{% url 'customer-login' %}" class="login">LOGIN</a>
+            
+            <a href="{% url 'customer-login' %}" class="login">LOGIN</a></div>
         </nav>
     </header>
     <main>
@@ -32,7 +32,7 @@
             <div class="one-content">
                 <h1>Fast, Reliable Shipping Around the Globe</h1>
                 <p>TrakTrek revolutionizes global logistics with assured safety and real-time tracking, delivering your goods to any corner of the world. Our service combines cutting-edge technology with exceptional security measures, ensuring a seamless and transparent shipping experience. Choose TrakTrek for reliable, next-generation international courier services that redefine the standards of delivery. TrakTrek's commitment to innovation extends to our customer service, providing personalized support and proactive problem-solving to guarantee satisfaction with every shipment.</p>
-                <a href="#" class="btn-discover">Track Your Package</a>
+                <a href="{% url 'package-status' %}" class="btn-discover">Track Your Package</a>
             </div>
             <div class="one-image">
                 <img src="{% static 'pic1.png' %}" alt="Delivery Image">

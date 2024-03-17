@@ -1,11 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.7.1/alpine.min.js"
 	integrity="sha512-ZRY5xQ6SJZ8rOZmu8WWqb6mgtzkFH2F6HLLhcABi9aOV9M+J5CDmNpmlAXZU9jq7czqBb41nIKfXpG0GeI/s4g=="
@@ -214,10 +214,6 @@ body {
 					name="email" class="form-input" required> <label
 					for="password">Password:</label> <input type="password"
 					id="password" name="password" class="form-input" required>
-				<label>Login as:</label> <input type="radio" id="customer" name="user_type"
-					value="customer" checked> <label for="customer">Customer</label>
-				<input type="radio" id="admin" name="user_type" value="admin">
-				<label for="admin">Admin</label>
 				<p class="forgot-password">
 					<a href="{% url 'forgot-password' %}">Forgot your password?</a>
 				</p>
@@ -230,18 +226,15 @@ body {
 				</div>
 				<div class="social-login-container">
 					<div class="social-login-item">
-						<a href=""> <img src="/static/img/google-logo.jpg"
-							alt="Google Selar Login" class="social-login-img">
+						<a href=""> <img src="{% static 'img/google-logo.jpg' %}" alt="Google Selar Login" class="social-login-img">
 						</a>
 					</div>
 					<div class="social-login-item">
-						<a href=""> <img src="/static/img/twitter-logo.png"
-							alt="Twitter Selar Login" class="social-login-img-twitter">
+						<a href=""> <img src="{% static 'img/twitter-logo.png' %}" alt="Twitter Selar Login" class="social-login-img-twitter">
 						</a>
 					</div>
 					<div class="social-login-item">
-						<a href=""> <img src="/static/img/facebook-logo.png"
-							alt="Facebook Logo" class="social-login-img">
+						<a href=""> <img src="{% static 'img/facebook-logo.png' %}" alt="Facebook Logo" class="social-login-img">
 						</a>
 					</div>
 				</div>

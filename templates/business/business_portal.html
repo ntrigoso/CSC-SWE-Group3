@@ -1,84 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Business Portal</title>
     <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            display: flex;
+        body {
+            font-family: Arial, sans-serif;
+            color: #000435;
+            background-color: #dadada;
         }
+
         .tabs-container {
-            display: flex;
-            flex-direction: column;
             background-color: #f0f0f0;
-            border-right: 1px solid #ccc;
-            height: 100%;
-            width: fit-content;
-        }
-        .tab {
             padding: 10px;
-            text-align: left;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tabs-wrapper .tab {
+            display: inline-block;
+            padding: 10px;
             cursor: pointer;
-            border: none;
-            border-left: 5px solid transparent;
+            border-radius: 5px;
             transition: background-color 0.3s;
-            display: flex;
-            align-items: center;
         }
-        .tab.active-tab {
-            border-left: 5px solid transparent;
-            background-color: #fff;
+
+        .active-tab {
+            background-color: #00415a;
+            color: #ffffff;
         }
-        #rest_of_the_page {
-            flex-grow: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+
+        .tab:hover {
+            background-color: #ccc;
         }
+
         .tab-content {
             display: none;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-        .tab-content.active-content {
+
+        .active-content {
             display: block;
-            text-align: center;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 20px;
         }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
+
+        th,
+        td {
             text-align: left;
+            padding: 8px;
+            border: 1px solid #ddd;
         }
+
         th {
+            background-color: #00415a;
+            color: #ffffff;
+        }
+
+        tr:nth-child(even) {
             background-color: #f2f2f2;
+        }
+
+        .logout-button a {
+            display: inline-block;
+            padding: 10px;
+            background-color: #00415a;
+            color: #ffffff;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .logout-button a:hover {
+            background-color: #ccc;
         }
     </style>
 </head>
 <body>
     <div class="tabs-container">
-        <div class="tab active-tab" onclick="openTab('Inventory')">Inventory</div>
-        <div class="tab" onclick="openTab('Routes')">Routes</div>
-        <div class="tab" onclick="openTab('Customers')">Customers</div>
-        <div class="tab" onclick="openTab('Packages')">Packages</div>
-        <div class="tab" onclick="openTab('Orders')">Orders</div>
-        <div class="tab" onclick="openTab('Feedback')">Feedback</div>
-        <div class="tab" onclick="openTab('Vehicles')">Vehicles</div>
+        <div class="tabs-wrapper">
+            <div class="tab active-tab" onclick="openTab('Inventory')">Inventory</div>
+            <div class="tab" onclick="openTab('Routes')">Routes</div>
+            <div class="tab" onclick="openTab('Customers')">Customers</div>
+            <div class="tab" onclick="openTab('Packages')">Packages</div>
+            <div class="tab" onclick="openTab('Orders')">Orders</div>
+            <div class="tab" onclick="openTab('Feedback')">Feedback</div>
+            <div class="tab" onclick="openTab('Vehicles')">Vehicles</div>
+        </div>
         <div class="logout-button">
             <a href="{% url 'customer-logout' %}">Logout</a>
         </div>
-        
-        
     </div>
     <div id="rest_of_the_page">
         <div class="tab-content active-content">
             <h2>Inventory</h2>
-            <div id="inventory_content">                    
+            <div id="inventory_content">
                 <table>
                     <tr>
                         <th>Package ID</th>
@@ -87,18 +116,18 @@
                         <!-- other columns... -->
                     </tr>
                     {% for package in packages %}
-                        <tr>
-                            <td>{{ package.package_id }}</td>
-                            <td>{{ package.package_customer }}</td>
-                            <td>{{ package.package_status }}</td>
-                            <!-- other column values... -->
-                        </tr>
+                    <tr>
+                        <td>{{ package.package_id }}</td>
+                        <td>{{ package.package_customer }}</td>
+                        <td>{{ package.package_status }}</td>
+                        <!-- other column values... -->
+                    </tr>
                     {% empty %}
-                    <tr> 
-                        <td colspan = "100%">No packages found.</td>
-                    </tr> 
+                    <tr>
+                        <td colspan="100%">No packages found.</td>
+                    </tr>
                     {% endfor %}
-            </table>
+                </table>
             </div>
         </div>
         <div class="tab-content" id="customers_tab">
@@ -108,7 +137,7 @@
                     <th>ID</th>
                     <th>First Name</th>
                     <th>Last Name</th>
-                    <th>Address</th> 
+                    <th>Address</th>
                     <th>Email</th>
                     <th>Phone</th>
                     <!-- Add more columns as needed -->
@@ -118,15 +147,15 @@
                     <td>{{ customer.id }}</td>
                     <td>{{ customer.first_name }}</td>
                     <td>{{ customer.last_name }}</td>
-                    <td>{{ customer.address }} </td> 
+                    <td>{{ customer.address }} </td>
                     <td>{{ customer.email }}</td>
-                    <td>{{ customer.phone }} </td> 
+                    <td>{{ customer.phone }} </td>
                     <!-- Add more columns as needed -->
                 </tr>
                 {% empty %}
-                    <tr> 
-                        <td colspan = "100%">No customers found.</td>
-                    </tr> 
+                <tr>
+                    <td colspan="100%">No customers found.</td>
+                </tr>
                 {% endfor %}
             </table>
         </div>
@@ -138,15 +167,15 @@
                     <th>Customer ID</th>
                     <th>Tracking Number</th>
                     <th>Description</th>
-                    <th>Weight</th> 
-                    <th>Dimensions</th> 
-                    <th>Shipping Type</th> 
-                    <th>Estimated Cost</th> 
-                    <th>Status</th> 
-                    <th>Created At</th> 
-                    <th>Updated At</th> 
+                    <th>Weight</th>
+                    <th>Dimensions</th>
+                    <th>Shipping Type</th>
+                    <th>Estimated Cost</th>
+                    <th>Status</th>
+                    <th>Created At</th>
+                    <th>Updated At</th>
                     <th>Pickup Address</th>
-                    <th>Delivery Address</th> 
+                    <th>Delivery Address</th>
                     <!-- Add more columns as needed -->
                 </tr>
                 {% for package in packages %}
@@ -167,9 +196,9 @@
                     <!-- Add more columns as needed -->
                 </tr>
                 {% empty %}
-                    <tr> 
-                        <td colspan = "100%">No packages found.</td>
-                    </tr> 
+                <tr>
+                    <td colspan="100%">No packages found.</td>
+                </tr>
                 {% endfor %}
             </table>
         </div>
@@ -180,11 +209,11 @@
                     <th>ID</th>
                     <th>Customer ID</th>
                     <th>Order Number</th>
-                    <th>Package ID</th> 
+                    <th>Package ID</th>
                     <th>Pickup or Dropoff</th>
-                    <th>Status</th> 
-                    <th>Created At</th> 
-                    <th>Updated At</th> 
+                    <th>Status</th>
+                    <th>Created At</th>
+                    <th>Updated At</th>
                     <!-- Add more columns as needed -->
                 </tr>
                 {% for order in orders %}
@@ -200,9 +229,9 @@
                     <!-- Add more columns as needed -->
                 </tr>
                 {% empty %}
-                    <tr> 
-                        <td colspan = "100%">No packages found.</td>
-                    </tr> 
+                <tr>
+                    <td colspan="100%">No packages found.</td>
+                </tr>
                 {% endfor %}
             </table>
         </div>
@@ -213,7 +242,7 @@
                     <th>ID</th>
                     <th>Customer ID</th>
                     <th>Comment</th>
-                    <th>Created</th> 
+                    <th>Created</th>
                     <!-- Add more columns as needed -->
                 </tr>
                 {% for feedback in feedbacks %}
@@ -225,13 +254,13 @@
                     <!-- Add more columns as needed -->
                 </tr>
                 {% empty %}
-                    <tr> 
-                        <td colspan = "100%">No feedback found.</td>
-                    </tr> 
+                <tr>
+                    <td colspan="100%">No feedback found.</td>
+                </tr>
                 {% endfor %}
             </table>
         </div>
-        
+
         <div class="tab-content" id="vehicles_tab">
             <h2>Vehicles</h2>
             <table>
@@ -239,7 +268,7 @@
                     <th>ID</th>
                     <th>Model</th>
                     <th>Plate Number</th>
-                    <th>Status</th> 
+                    <th>Status</th>
                     <!-- Add more columns as needed -->
                 </tr>
                 {% for vehicle in vehicles %}
@@ -251,27 +280,29 @@
                     <!-- Add more columns as needed -->
                 </tr>
                 {% empty %}
-                    <tr> 
-                        <td colspan = "100%">No vehicles found.</td>
-                    </tr> 
+                <tr>
+                    <td colspan="100%">No vehicles found.</td>
+                </tr>
                 {% endfor %}
             </table>
         </div>
-        <div class="tab-content"><h2>Routes</h2>Routes Content</div>
-        
+        <div class="tab-content">
+            <h2>Routes</h2>Routes Content
+        </div>
+
     </div>
     <script>
         function openTab(tabName) {
             var tabs = document.querySelectorAll('.tab');
             var tabContents = document.querySelectorAll('.tab-content');
-            tabs.forEach(function(tab) {
+            tabs.forEach(function (tab) {
                 if (tab.textContent === tabName) {
                     tab.classList.add('active-tab');
                 } else {
                     tab.classList.remove('active-tab');
                 }
             });
-            tabContents.forEach(function(content) {
+            tabContents.forEach(function (content) {
                 if (content.querySelector('h2').textContent === tabName) {
                     content.classList.add('active-content');
                 } else {
@@ -281,4 +312,5 @@
         }
     </script>
 </body>
+
 </html>

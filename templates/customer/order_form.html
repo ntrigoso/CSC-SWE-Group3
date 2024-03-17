@@ -2,7 +2,7 @@
 
 {% block content %}
 <h2>New Order</h2>
-<form method="post">
+<form method="post" action="{% url 'place-order' %}">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Place Order</button>

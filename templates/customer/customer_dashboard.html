@@ -3,144 +3,251 @@
 {% block content %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Dashboard</title>
     <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            display: flex;
+        body {
+            font-family: Arial, sans-serif;
+            color: #000435;
+            background-color: #dadada;
         }
+
         .tabs-container {
-            display: flex;
-            flex-direction: column;
             background-color: #f0f0f0;
-            border-right: 1px solid #ccc;
-            height: 100%;
-            width: fit-content;
-        }
-        .tab {
             padding: 10px;
-            text-align: left;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tabs-wrapper .tab {
+            display: inline-block;
+            padding: 10px;
             cursor: pointer;
-            border: none;
-            border-left: 5px solid transparent;
+            border-radius: 5px;
             transition: background-color 0.3s;
-            display: flex;
-            align-items: center;
         }
-        .tab.active-tab {
-            border-left: 5px solid #4CAF50; /* Change to make it visible */
-            background-color: #fff;
+
+        .active-tab {
+            background-color: #00415a;
+            color: #ffffff;
         }
-        .logout-button {
-        	font-size: 2.2em;
-            margin-top: auto;
-            padding: 10px;
+
+        .tab:hover {
+            background-color: #ccc;
         }
-        #rest_of_the_page {
-            flex-grow: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+
         .tab-content {
             display: none;
             padding: 20px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-        .tab-content.active-content {
+
+        .active-content {
             display: block;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 20px;
         }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
+
+        th,
+        td {
             text-align: left;
+            padding: 8px;
+            border: 1px solid #ddd;
         }
+
         th {
+            background-color: #000435;
+            color: #ffffff;
+        }
+
+        tr:nth-child(even) {
             background-color: #f2f2f2;
+        }
+
+        .logout-button a {
+            display: inline-block;
+            padding: 10px;
+            background-color: #00415a;
+            color: #ffffff;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .logout-button a:hover {
+            background-color: #ccc;
+        }
+
+        .profile-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .profile-info,
+        .update-profile {
+            width: 48%;
+            padding: 20px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-info p {
+            margin: 10px 0;
+        }
+
+        .update-profile form {
+            display: grid;
+            grid-gap: 10px;
+        }
+
+        .update-profile label {
+            font-weight: bold;
+        }
+
+        .update-profile input {
+            padding: 5px;
+            border-radius: 3px;
+            border: 1px solid #ccc;
+        }
+
+        .update-profile button {
+            padding: 10px;
+            background-color: #00415a;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .update-profile button:hover {
+            background-color: #002d41;
         }
     </style>
 </head>
+
 <body>
     <div class="tabs-container">
-        <div class="tab" onclick="openTab('Orders')">Orders</div>
-        <div class="tab" onclick="openTab('Tracking')">Tracking</div>
-        <div class="tab" onclick="openTab('Feedback')">Feedback</div>
-        <div class="tab" onclick="openTab('Profile Settings')">Profile Settings</div>
+        <div class="tabs-wrapper">
+            <div class="tab active-tab" onclick="openTab('Orders')">Orders</div>
+            <div class="tab" onclick="openTab('Tracking')">Tracking</div>
+            <div class="tab" onclick="openTab('Customer Service')">Customer Service</div>
+            <div class="tab" onclick="openTab('Profile Settings')">Profile Settings</div>
+        </div>
         <div class="logout-button">
             <a href="{% url 'customer-logout' %}">Logout</a>
         </div>
     </div>
     <div id="rest_of_the_page">
-        <div id="Orders" class="tab-content">
-            <h2>Orders</h2>
-            <h2>New Order</h2>
+        <div id="Orders" class="tab-content active-content">
+           
             <div id="new-order-form">
                 {% include 'customer/order_form.html' %}
             </div>
-            <h2>Active Orders</h2>
+            <h3>Active Orders</h3>
             {% if active_orders %}
             <table>
                 <thead>
                     <tr>
                         <th>Order Number</th>
-                        <th>Package Dimensions</th>
-                        <th>Package Weight</th>
-                        <th>Pickup or Dropoff</th>
-                        <th>Status</th>
-                        <th>Estimated Cost</th>
+            <th>Package Dimensions</th>
+            <th>Package Weight</th>
+            <th>Pickup Address</th>
+            <th>Delivery Address</th>
+            <th>Shipping Type</th>
+            <th>Status</th>
+            <th>Estimated Cost</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for order in active_orders %}
-                    <tr>
-                        <td>{{ order.order_number }}</td>
-                        <td>{{ order.package_dimensions }}</td>
-                        <td>{{ order.package_weight }}</td>
-                        <td>{{ order.pickup_or_dropoff }}</td>
-                        <td>{{ order.status }}</td>
-                        <td>{{ order.estimated_cost }}</td>
-                    </tr>
-                    {% endfor %}
+        <tr>
+            <td>{{ order.order_number }}</td>
+            <td>{{ order.package_dimensions }}</td>
+            <td>{{ order.package_weight }}</td>
+            <td>{{ order.pickup_address }}</td>
+            <td>{{ order.delivery_address }}</td>
+            <td>{{ order.shipping_type }}</td>
+            <td>{{ order.status }}</td>
+            <td>{{ order.estimated_cost }}</td>
+        </tr>
+        {% endfor %}
                 </tbody>
             </table>
             {% else %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order Number</th>
+            <th>Package Dimensions</th>
+            <th>Package Weight</th>
+            <th>Pickup or Dropoff</th>
+            <th>Delivery Address</th>
+            <th>Shipping Type</th>
+            <th>Status</th>
+                    </tr>
+                </thead>
+            </table>
             <p>No active orders.</p>
             {% endif %}
-            <h2>Past Orders</h2>
+            <h3>Past Orders</h3>
             {% if past_orders %}
             <table>
                 <thead>
                     <tr>
                         <th>Order Number</th>
-                        <th>Package Dimensions</th>
-                        <th>Package Weight</th>
-                        <th>Pickup or Dropoff</th>
-                        <th>Status</th>
-                        <th>Estimated Cost</th>
+            <th>Package Dimensions</th>
+            <th>Package Weight</th>
+            <th>Pickup Address</th>
+            <th>Delivery Address</th>
+            <th>Shipping Type</th>
+            <th>Status</th>
+            <th>Estimated Cost</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for order in past_orders %}
-                    <tr>
-                        <td>{{ order.order_number }}</td>
-                        <td>{{ order.package_dimensions }}</td>
-                        <td>{{ order.package_weight }}</td>
-                        <td>{{ order.pickup_or_dropoff }}</td>
-                        <td>{{ order.status }}</td>
-                        <td>{{ order.estimated_cost }}</td>
-                    </tr>
-                    {% endfor %}
+                    {% for order in active_orders %}
+        <tr>
+            <td>{{ order.order_number }}</td>
+            <td>{{ order.package_dimensions }}</td>
+            <td>{{ order.package_weight }}</td>
+            <td>{{ order.pickup_address }}</td>
+            <td>{{ order.delivery_address }}</td>
+            <td>{{ order.shipping_type }}</td>
+            <td>{{ order.status }}</td>
+            <td>{{ order.estimated_cost }}</td>
+        </tr>
+        {% endfor %}
                 </tbody>
             </table>
             {% else %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order Number</th>
+            <th>Package Dimensions</th>
+            <th>Package Weight</th>
+            <th>Pickup or Dropoff</th>
+            <th>Delivery Address</th>
+            <th>Shipping Type</th>
+            <th>Status</th>
+                    </tr>
+                </thead>
+            </table>
             <p>No past orders.</p>
             {% endif %}
         </div>
@@ -175,24 +282,103 @@
             <p>No active shipments.</p>
             {% endif %}
         </div>
-        <div id="Feedback" class="tab-content">
-            <h2>Feedback</h2>
-            <div id="feedback-form">
-                {% include 'customer/feedback_form.html' %}
+        <div id="Customer Service" class="tab-content">
+            <h2>Customer Service</h2>
+            <div id="customer-service-form">
+                <form method="post" action="{% url 'submit-customer-service-message' %}">
+                    {% csrf_token %}
+                    <label for="message">Message:</label>
+                    <textarea name="message" id="message" required></textarea>
+                    <button type="submit">Submit</button>
+                </form>
             </div>
+            <h3>Previous Messages</h3>
+            {% if customer_service_messages %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Message</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for message in customer_service_messages %}
+                    <tr>
+                        <td>{{ message.message }}</td>
+                        <td>{{ message.status }}</td>
+                        <td>{{ message.created_at }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p>No customer service messages yet.</p>
+            {% endif %}
         </div>
         <div id="Profile Settings" class="tab-content">
             <h2>Profile Settings</h2>
-            <form method="post">
-                {% csrf_token %}
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" value="{{ customer.email }}" required>
-                <label for="password">New Password:</label>
-                <input type="password" id="password" name="password">
-                <label for="confirm_password">Confirm New Password:</label>
-                <input type="password" id="confirm_password" name="confirm_password">
-                <button type="submit" name="profile_form">Save Changes</button>
-            </form>
+            <div class="profile-container">
+                <div class="profile-info">
+                    <h3>Profile Information</h3>
+                    <p><strong>Name:</strong> {{ customer.first_name }} {{ customer.last_name }}</p>
+                    <p><strong>Address:</strong> {{ customer.address }}</p>
+                    <p><strong>Email:</strong> {{ customer.email }}</p>
+                    <p><strong>Phone:</strong> {{ customer.phone }}</p>
+                </div>
+                <div class="update-profile">
+                    <h3>Update Profile</h3>
+                    <form method="post">
+                        {% csrf_token %}
+                        <label for="first_name">First Name:</label>
+                        <input type="text" id="first_name" name="first_name" value="{{ customer.first_name }}" required>
+                        <label for="last_name">Last Name:</label>
+                        <input type="text" id="last_name" name="last_name" value="{{ customer.last_name }}" required>
+                        <label for="address">Address:</label>
+                        <input type="text" id="address" name="address" value="{{ customer.address }}" required>
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" value="{{ customer.email }}" required>
+                        <label for="phone">Phone:</label>
+                        <input type="tel" id="phone" name="phone" value="{{ customer.phone }}" required>
+                        <label for="password">New Password:</label>
+                        <input type="password" id="password" name="password">
+                        <label for="confirm_password">Confirm New Password:</label>
+                        <input type="password" id="confirm_password" name="confirm_password">
+                        <button type="submit" name="profile_form">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+            <h3>Order History</h3>
+            {% if orders %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order Number</th>
+                        <th>Package Information</th>
+                        <th>Delivery Status</th>
+                        <th>Feedback</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td>{{ order.order_number }}</td>
+                        <td>{{ order.package_details }}</td>
+                        <td>{{ order.delivery_status }}</td>
+                        <td>
+                            {% if order.feedback %}
+                            {{ order.feedback.comment }}
+                            {% else %}
+                            <a href="{% url 'leave-feedback' order.id %}">Leave Feedback</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p>No orders found.</p>
+            {% endif %}
         </div>
     </div>
     <script>
