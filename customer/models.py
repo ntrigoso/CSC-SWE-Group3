@@ -70,7 +70,6 @@ class Order(models.Model):
     pickup_or_dropoff = models.CharField(max_length=10)
     pickup_address = models.CharField(max_length=255, blank=True, null=True)
     delivery_address = models.CharField(max_length=255, blank=True, null=True)
-    shipping_type = models.CharField(max_length=20, blank=True, null=True)
     estimated_cost = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.CharField(max_length=20, default='Processing')
     created_at = models.DateTimeField(auto_now_add=True)

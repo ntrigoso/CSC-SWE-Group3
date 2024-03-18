@@ -25,6 +25,7 @@ from .models import Customer, Admin
 from django.shortcuts import redirect
 import random
 import string
+from decimal import Decimal
 
 
 
@@ -165,6 +166,7 @@ def place_order(request):
                 estimated_cost=calculate_estimated_cost(
                     form.cleaned_data['package_dimensions'],
                     form.cleaned_data['package_weight'],
+                    form.cleaned_data['pickup_or_dropoff'],
                     form.cleaned_data['shipping_type']
                 )['total'],
                 status='Processing'
@@ -245,30 +247,50 @@ def customer_dashboard(request):
 
 
 
-def calculate_estimated_cost(package_dimensions, package_weight, shipping_type):
-    # Implement a realistic shipping cost calculation based on the package dimensions, weight, and shipping type
-    if shipping_type == 'ground':
-        shipping_cost = 10.0
-    elif shipping_type == 'priority':
-        shipping_cost = 20.0
-    elif shipping_type == 'nextDay':
-        shipping_cost = 30.0
-    else:
-        shipping_cost = 0.0
+def calculate_estimated_cost(package_dimensions, package_weight, pickup_or_dropoff, shipping_type):
+    # Parse package dimensions
+    dimensions = package_dimensions.split('x')
+    length, width, height = map(Decimal, dimensions)
 
-    base_cost = package_weight * 0.5
-    handling_cost = 5.0
+    # Calculate volume
+    volume = length * width * height
+
+    # Implement a realistic shipping cost calculation based on the package dimensions, weight, pickup or dropoff, and shipping type
+    if pickup_or_dropoff == 'pickup':
+        if shipping_type == 'ground':
+            shipping_cost = Decimal('10.0')
+        elif shipping_type == 'priority':
+            shipping_cost = Decimal('15.0')
+        elif shipping_type == 'nextDay':
+            shipping_cost = Decimal('20.0')
+        else:
+            shipping_cost = Decimal('0.0')
+    elif pickup_or_dropoff == 'dropoff':
+        if shipping_type == 'ground':
+            shipping_cost = Decimal('12.0')
+        elif shipping_type == 'priority':
+            shipping_cost = Decimal('17.0')
+        elif shipping_type == 'nextDay':
+            shipping_cost = Decimal('22.0')
+        else:
+            shipping_cost = Decimal('0.0')
+    else:
+        shipping_cost = Decimal('0.0')
+
+    base_cost = package_weight * Decimal('0.5')
+    handling_cost = Decimal('5.0')
     subtotal = base_cost + shipping_cost + handling_cost
-    tax = subtotal * 0.1
+    tax = subtotal * Decimal('0.1')
     total = subtotal + tax
 
     return {
-        'shipping': shipping_cost,
-        'handling': handling_cost,
-        'subtotal': subtotal,
-        'tax': tax,
-        'total': total
+        'shipping': float(shipping_cost),
+        'handling': float(handling_cost),
+        'subtotal': float(subtotal),
+        'tax': float(tax),
+        'total': float(total)
     }
+
 
 
 def forgot_password(request):

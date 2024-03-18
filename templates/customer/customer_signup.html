@@ -1,3 +1,4 @@
+{% load static %}
 <html>
 <head>
     <title>Sign Up</title>
@@ -202,18 +203,17 @@
                 <div class="social-login-container">
                     <div class="social-login-item">
                         <a href="">
-                            <img src="/static/img/google-logo.jpg" alt="Google Selar Login" class="social-login-img">
+                            <img src="{% static 'img/google-logo.jpg' %}" alt="Google Selar Login" class="social-login-img">
                         </a>
                     </div>
                     <div class="social-login-item">
                         <a href="">
-                            <img src="/static/img/twitter-logo.png" alt="Twitter Selar Login"
-                                class="social-login-img-twitter">
+                            <img src="{% static 'img/twitter-logo.png' %}" alt="Twitter Selar Login" class="social-login-img-twitter">
                         </a>
                     </div>
                     <div class="social-login-item">
                         <a href="">
-                            <img src="/static/img/facebook-logo.png" alt="Facebook Logo" class="social-login-img">
+                            <img src="{% static 'img/facebook-logo.png' %}" alt="Facebook Logo" class="social-login-img">
                         </a>
                     </div>
                 </div>

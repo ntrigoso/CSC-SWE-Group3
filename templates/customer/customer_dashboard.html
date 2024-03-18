@@ -155,9 +155,13 @@
     <div id="rest_of_the_page">
         <div id="Orders" class="tab-content active-content">
            
-            <div id="new-order-form">
+            <!-- <div id="new-order-form">
                 {% include 'customer/order_form.html' %}
-            </div>
+            </div> -->
+            <div id="new-order">
+    <h2>New Order</h2>
+    <button onclick="window.location.href='{% url 'place-order' %}'" class="btn btn-primary">Place an Order</button>
+
             <h3>Active Orders</h3>
             {% if active_orders %}
             <table>
@@ -348,37 +352,7 @@
                     </form>
                 </div>
             </div>
-            <h3>Order History</h3>
-            {% if orders %}
-            <table>
-                <thead>
-                    <tr>
-                        <th>Order Number</th>
-                        <th>Package Information</th>
-                        <th>Delivery Status</th>
-                        <th>Feedback</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for order in orders %}
-                    <tr>
-                        <td>{{ order.order_number }}</td>
-                        <td>{{ order.package_details }}</td>
-                        <td>{{ order.delivery_status }}</td>
-                        <td>
-                            {% if order.feedback %}
-                            {{ order.feedback.comment }}
-                            {% else %}
-                            <a href="{% url 'leave-feedback' order.id %}">Leave Feedback</a>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            {% else %}
-            <p>No orders found.</p>
-            {% endif %}
+            
         </div>
     </div>
     <script>

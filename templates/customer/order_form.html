@@ -5,6 +5,12 @@
 <form method="post" action="{% url 'place-order' %}">
     {% csrf_token %}
     {{ form.as_p }}
+    <label for="shipping_type">Shipping Type:</label>
+    <select id="shipping_type" name="shipping_type">
+        <option value="ground">Ground</option>
+        <option value="priority">Priority</option>
+        <option value="nextDay">Next Day</option>
+    </select>
     <button type="submit">Place Order</button>
 </form>
 {% endblock %}
