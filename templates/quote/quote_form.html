@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Get a Quote</h1>
+<button id="show-quote-form">Get a Quote</button>
+<div id="quote-form-container" style="display: none;">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Get Estimate</button>
+    </form>
+
+    {% if estimate_breakdown %}
+    <div class="estimate-breakdown">
+        <h2>Estimate Breakdown</h2>
+        <p>Shipping: ${{ estimate_breakdown.shipping }}</p>
+        <p>Handling: ${{ estimate_breakdown.handling }}</p>
+        <p>Subtotal: ${{ estimate_breakdown.subtotal }}</p>
+        <p>Tax: ${{ estimate_breakdown.tax }}</p>
+        <p>Total: ${{ estimate_breakdown.total }}</p>
+    </div>
+    {% endif %}
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#show-quote-form').click(function() {
+            $('#quote-form-container').toggle('fade');
+        });
+    });
+</script>
+{% endblock %}

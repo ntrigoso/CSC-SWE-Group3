@@ -1,0 +1,181 @@
+{% extends 'customer/base.html' %}
+
+{% block content %}
+
+<style>
+     @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+    * {
+        --primary-color: #00415a;
+    }
+
+    body {
+        background-color: #f6f6f6;
+        font-family: 'Roboto', sans-serif;
+
+    }
+
+    .form-container {
+        display: flex;
+        justify-content: space-around;
+        animation: slideDown 1s ease forwards;
+    }
+
+    /* Define the slide down animation */
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-50px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .title {
+        text-align: center;
+        font-size: 50px;
+        font-weight: bold;
+        color: var(--primary-color);
+    }
+
+    .left-section,
+    .right-section {
+        flex: 1;
+        padding: 20px;
+    }
+
+    .left-section h2 {
+        margin-bottom: 20px;
+        font-size: 50px;
+        font-weight: bold;
+        color: #00415a;
+        text-align: center;
+    }
+
+    .left-section p {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+
+    .left-section ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .left-section ul li {
+        margin: 50px 0 30px 50px;
+        font-weight: bold;
+        font-size: 20px;
+        
+    }
+
+    .left-section ul li span {
+        font-weight: bold;
+        color: #00415a;
+        font-size: 30px;
+        padding-top: 30px;
+
+    }
+
+    .right-section form {
+        max-width: 500px;
+        margin: 0 auto;
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    }
+
+    .right-section form p {
+        margin-bottom: 20px;
+    }
+
+    .right-section label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .right-section input[type="text"],
+    .right-section input[type="number"],
+    .right-section select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        font-size: 16px;
+    }
+
+    .right-section button {
+        display: block;
+        width: 100%;
+        padding: 15px;
+        background-color: #00415a;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        font-size: 16px;
+    }
+
+    .right-section button:hover {
+        background-color: #00415a;
+    }
+
+    .dashboard-link {
+        position: fixed;
+        bottom: 20px;
+        /* Adjust bottom position */
+        left: 20px;
+        padding: 10px 20px;
+        background-color: #00415a;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 16px;
+        z-index: 9999;
+    }
+
+    .dashboard-link:hover {
+        background-color: #45a049;
+    }
+
+    button {
+        margin-top: 20px;
+    }
+</style>
+
+<h1 class="title">ORDER NOW</h1>
+<div class="form-container">
+    <div class="left-section">
+        <p>Packages and pallets, big and small, we can offer you instant delivery options for your shipping needs, both
+            domestically and internationally. Fill out your shipment details below and we’ll provide services tailored
+            to your specific requirements. Simply pick the option that suits you best, and continue to book.</p>
+        <ul>
+            <li><span>1.</span> ENTER ORIGIN AND DESTINATION</li>
+            <li><span>2.</span> DESCRIBE YOUR SHIPMENT</li>
+            <li><span>3.</span> GET DELIVERY PRICES</li>
+            <li><span>4.</span> PROCEED WITH ONLINE BOOKING</li>
+        </ul>
+    </div>
+    <div class="right-section">
+        <!-- <h2>Create a Shipment</h2> -->
+        <form method="post" action="{% url 'place-order' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <label for="shipping_type">Shipping Type:</label>
+            <select id="shipping_type" name="shipping_type">
+                <option value="ground">Ground</option>
+                <option value="priority">Priority</option>
+                <option value="nextDay">Next Day</option>
+            </select>
+            <button type="submit">Place Order</button>
+        </form>
+    </div>
+</div>
+<a href="{% url 'customer-dashboard' %}" class="dashboard-link">Go back to dashboard</a>
+{% endblock %}

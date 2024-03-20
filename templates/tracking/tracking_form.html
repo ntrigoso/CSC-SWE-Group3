@@ -1,0 +1,153 @@
+<!-- {% extends 'base.html' %}
+
+         {% block content %}
+         <h1>Track Your Shipment</h1>
+         <form method="post" action="{% url 'package-status' %}">
+             {% csrf_token %}
+             <label for="tracking_number">Tracking Number:</label>
+             <input type="text" id="tracking_number" name="tracking_number" required>
+             <button type="submit">Track</button>
+         </form>
+         {% endblock %} -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+  }
+
+  h1 {
+    color: #00415a;
+    font-size: 25px;
+    margin: 30px 50px;
+  }
+
+
+  .container {
+    margin: 0 auto;
+    justify-content: center;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    max-width: 1000px;
+    max-height: 1000px;
+    /* Adjusted max-height */
+  }
+
+  .container form {
+    margin: 20px 50px;
+  }
+
+  .input-wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .left-section {
+    flex-grow: 1;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .right-section {
+    flex-grow: 1;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    margin-left: 10px;
+    width: 50px;
+    height: 100%;
+  }
+
+  .right-section p {
+    font-size: 12px;
+  }
+
+  label {
+    display: block;
+    margin: 20px 0px;
+    color: #333;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  input[type="text"] {
+    width: calc(100% - 24px);
+    padding: 15px;
+    font-size: 18px;
+    border-radius: 5px;
+    box-sizing: border-box;
+    color: black;
+  }
+
+  button[type="submit"] {
+    background-color: #00415a;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 12px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 30px;
+    transition: background-color 0.3s ease;
+  }
+
+  button[type="submit"]:hover {
+    background-color: #002d3a;
+  }
+
+  .list {
+    padding: 10px 0;
+  }
+
+  .list li {
+    margin: 20px 0;
+    list-style: none;
+    text-decoration: none;
+  }
+</style>
+
+<body>
+  <div class="container">
+    <h1>Track Your Shipment</h1>
+    <form method="post" action="{% url 'package-status' %}">
+      {% csrf_token %}
+      <p>Enter tracking numbers to quickly check the status of your shipment.</p>
+      <div class="input-wrapper">
+        <div class="left-section">
+          <div class="shipment-type">
+            <h4>Shipment Type</h4>
+            <p>Express</p>
+          </div>
+          <div class="tracking">
+            <label for="tracking_number">Tracking Number(s):</label>
+            <input type="text" id="tracking_number" name="tracking_number" required>
+            <p>Enter up to 10 numbers, separated by a comma or return
+              Track</p>
+            <button type="submit">Track</button>
+          </div>
+        </div>
+        <div class="right-section">
+          <p>
+            You don't have any shipments in transit or recently delivered. When you do, they'll appear here and you can
+            quickly track them!
+          </p>
+        </div>
+
+      </div>
+      <!-- Added list -->
+      <ul class="list">
+        <li><a href="/us/en/help-and-support/faqs/tracking-monitoring.html" target="lightbox">Tracking FAQs</a></li>
+        <li><a href="/us/en/help-and-support.html#/contact_us" target="_self">Contact Us</a></li>
+        <li><a href="/us/en/legal/tracking-terms-and-conditions.html" target="lightbox">Terms and Conditions</a></li>
+      </ul>
+    </form>
+  </div>
+</body>
+{% endblock %}

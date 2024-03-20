@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<h1>Track Your Shipment</h1>
+<form id="tracking-form" method="post" action="{% url 'package-status' %}">
+    {% csrf_token %}
+    <label for="tracking_number">Tracking Number:</label>
+    <input type="text" id="tracking_number" name="tracking_number" required>
+    <button type="submit">Track</button>
+</form>
+
+<div id="package-status-container">
+    {% if shipment %}
+    <h2>Package Status</h2>
+    <p>Tracking Number: {{ shipment.tracking_number }}</p>
+    <p>Package Description: {{ shipment.package_description }}</p>
+    <p>Pickup Address: {{ shipment.pickup_address }}</p>
+    <p>Delivery Address: {{ shipment.delivery_address }}</p>
+    <p>Status: {{ shipment.status }}</p>
+    <p>Last Updated: {{ shipment.updated_at }}</p>
+    {% if map_html %}
+    <div class="map-container">
+        {{ map_html|safe }}
+    </div>
+    {% endif %}
+    {% elif error %}
+    <p>{{ error }}</p>
+    {% endif %}
+</div>
+{% endblock %}
