@@ -18,32 +18,13 @@
     <p>Delivery Address: {{ shipment.delivery_address }}</p>
     <p>Status: {{ shipment.status }}</p>
     <p>Last Updated: {{ shipment.updated_at }}</p>
+    {% if map_html %}
+    <div class="map-container">
+        {{ map_html|safe }}
+    </div>
+    {% endif %}
     {% elif error %}
     <p>{{ error }}</p>
     {% endif %}
 </div>
-
-<script>
-    document.getElementById('tracking-form').addEventListener('submit', function(event) {
-        event.preventDefault();
-        var trackingNumber = document.getElementById('tracking_number').value;
-        fetch('{% url 'package-status' %}', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'X-CSRFToken': '{{ csrf_token }}'
-            },
-            body: 'tracking_number=' + trackingNumber
-        })
-        .then(function(response) {
-            return response.text();
-        })
-        .then(function(data) {
-            document.getElementById('package-status-container').innerHTML = data;
-        })
-        .catch(function(error) {
-               console.error('Error:', error);
-           });
-       });
-   </script>
-   {% endblock %}
+{% endblock %}
