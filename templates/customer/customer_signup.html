@@ -1,4 +1,6 @@
-<html>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <title>Sign Up</title>
     <style>
@@ -200,23 +202,19 @@
                     <div class="divider"></div>
                 </div>
                 <div class="social-login-container">
-                    <div class="social-login-item">
-                        <a href="">
-                            <img src="/static/img/google-logo.jpg" alt="Google Selar Login" class="social-login-img">
-                        </a>
-                    </div>
-                    <div class="social-login-item">
-                        <a href="">
-                            <img src="/static/img/twitter-logo.png" alt="Twitter Selar Login"
-                                class="social-login-img-twitter">
-                        </a>
-                    </div>
-                    <div class="social-login-item">
-                        <a href="">
-                            <img src="/static/img/facebook-logo.png" alt="Facebook Logo" class="social-login-img">
-                        </a>
-                    </div>
-                </div>
+					<div class="social-login-item">
+						<img src="{% static 'img/google-logo.png' %}" alt="Google Selar Login" class="social-login-img">
+						</a>
+					</div>
+					<div class="social-login-item">
+						<a href=""> <img src="{% static 'img/twitter-logo.png' %}" alt="Twitter Selar Login" class="social-login-img-twitter">
+						</a>
+					</div>
+					<div class="social-login-item">
+						<a href=""> <img src="{% static 'img/facebook-logo.png' %}" alt="Facebook Logo" class="social-login-img">
+						</a>
+					</div>
+				</div>
             </form>
         </div>
     </div>
